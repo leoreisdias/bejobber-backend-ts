@@ -5,7 +5,14 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
-    "start": "ts-node-dev --ignore-watch node_modules src/server.ts"
+    "ts:watch": "tsc -w",
+    "ts:build": "tsc",
+    "serve": "nodemon dist/server.js",
+    "watch": "concurrently \"npm run ts:watch\" \"npm run serve\"",
+    "build": "npm run ts:build",
+    "prod:serve": "node dist/server.js",
+    "start": "npm run build && npm run prod:serve",
+    "tslint": "tslint -c tslint.json -p tsconfig.json"
   },
   "dependencies": {
     "@types/cors": "^2.8.8",
