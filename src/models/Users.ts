@@ -21,6 +21,8 @@ export interface IUser extends mongoose.Document {
         type: typeof PointSchema,
         index: string
     },
+    working_hours: string,
+    work_on_weekends: boolean,
     score: number,
     totalScore: number
 }
@@ -42,6 +44,8 @@ const UserSchema = new mongoose.Schema({
         type: PointSchema,
         index: '2dsphere'
     },
+    working_hours: String,
+    work_on_weekends: Boolean,
     score: Number,
     totalScore: Number
 });
@@ -54,4 +58,4 @@ UserSchema.pre<IUser>('save', async function (next) {
     next();
 })
 
-module.exports = mongoose.model('User', UserSchema);
+export default mongoose.model('User', UserSchema);

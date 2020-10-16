@@ -1,17 +1,15 @@
 import { Request, Response } from 'express'
 
-const User = require('../models/Users');
-const parseStringAsArray = require('../utils/parseStringAsArray');
+import User from '../models/Users'
+import parseStringAsArray from '../utils/parseStringAsArray'
 
 export default {
     async index(req: Request, res: Response) {
-        console.log(req.query);
-
         const { latitude, longitude, services } = req.query;
 
         const servicesArray = parseStringAsArray(services);
 
-        const serviceToUpperCase = servicesArray.map((service: string) => service.toUpperCase());
+        const serviceToUpperCase = servicesArray.map((service: any) => service.toUpperCase());
 
         const users = await User.find({
             services: {

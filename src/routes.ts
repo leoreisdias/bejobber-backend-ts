@@ -2,11 +2,10 @@ import { Router } from 'express'
 import multer from 'multer'
 import uploadConfig from './config/upload'
 import authMiddleware from './middleware/auth'
-import authController from './controllers/authController'
+import authsController from './controllers/authsController'
 
 import UsersController from './controllers/UsersController'
-import SearchController from './controllers/SearchController'
-import profilesController from './controllers/profilesController'
+import SearchsController from './controllers/SearchsController'
 
 const routes = Router();
 const upload = multer(uploadConfig);
@@ -14,11 +13,11 @@ const upload = multer(uploadConfig);
 
 routes.get('/users', UsersController.index);
 routes.post('/users', upload.array('images'), UsersController.store);
+routes.get('/users/:id', UsersController.show);
 
-routes.get('/search', SearchController.index);
-routes.get('/profile', profilesController.index);
+routes.get('/search', SearchsController.index);
 
-routes.post('/authenticate', authController.store);
+routes.post('/authenticate', authsController.store);
 
 
 routes.use(authMiddleware);

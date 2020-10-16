@@ -1,15 +1,21 @@
 require('dotenv').config();
 
 import { Request, Response } from 'express'
-
-const User = require('../models/Users');
+import User from '../models/Users'
 //const parseStringAsArray = require('../utils/parseStringAsArray');
-const axios = require('axios');
 
 import * as Yup from 'yup'
 import geocodeRequest from '../utils/geocodeRequest';
 
 export default {
+
+    async show(req: Request, res: Response) {
+
+        const { id } = req.query;
+        const users = await User.findById(id);
+
+        return res.json({ users })
+    },
 
     async store(req: Request, res: Response) {
         const {
@@ -23,7 +29,9 @@ export default {
             address,
             houseNumber,
             city,
-            state
+            state,
+            working_hours,
+            work_on_weekends
         } = req.body;
 
         const requestImages: any = req.files as Express.Multer.File[];
@@ -61,7 +69,9 @@ export default {
                 houseNumber,
                 city,
                 state,
-                location
+                location,
+                working_hours,
+                work_on_weekends: work_on_weekends === "true"
             }
 
             // const schema = Yup.object().shape({
@@ -93,15 +103,17 @@ export default {
             return res.status(400).json({ error: "CPF ou Email já cadastrado" });
         }
 
-        user.psswd = undefined;
+        // user.psswd = undefined;
 
         return res.json(user);
     },
 
     async index(req: Request, res: Response) {
         const users = await User.find();
+        if (!users)
+            return res.json({ message: 'Problema na Conexão. Por favor, tentar novamente mais tarde.' })
 
-        return res.json(users);
+        return res.json({ users });
     },
 
     async update() {
