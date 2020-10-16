@@ -11,7 +11,7 @@ export default {
 
     async show(req: Request, res: Response) {
 
-        const { id } = req.query;
+        const { id } = req.params
         const users = await User.findById(id);
 
         return res.json({ users })
