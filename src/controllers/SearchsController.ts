@@ -7,14 +7,12 @@ export default {
     async index(req: Request, res: Response) {
         const { latitude, longitude, services } = req.query;
 
-        const servicesArray = parseStringAsArray(services);
+        // const servicesArray = parseStringAsArray(services);
 
-        const serviceToUpperCase = servicesArray.map((service: any) => service.toUpperCase());
+        // const serviceToUpperCase = servicesArray.map((service: any) => service.toUpperCase());
 
         const users = await User.find({
-            services: {
-                $in: serviceToUpperCase,
-            },
+            services: new RegExp(String(services), 'gi'),
             location: {
                 $near: {
                     $geometry: {
