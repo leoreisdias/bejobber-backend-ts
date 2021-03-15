@@ -39,6 +39,9 @@ export default {
             return { path: image.location }
         })
 
+        console.log(images);
+
+
         let fullAddress = await geocodeRequest(houseNumber + ' ' + address + ' ' + city + ' ' + state);
 
         const location = {
